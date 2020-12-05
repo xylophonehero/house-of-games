@@ -1,35 +1,59 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
+import IdentityModal from 'react-netlify-identity-widget'
+import styled from 'styled-components'
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
+const HeaderContainer = styled.header`
+  display: grid;
+  grid-template-columns: auto auto 200px;
+`
+
+const LogOutButton = styled.button`
+  width: 200px;
+  border: 2px solid yellow;
+`
+
+const Header = (props) =>
+{
+  const [dialog, setDialog] = React.useState(false)
+  return (
+    <header
       style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
+        background: `lightblue`,
+        marginBottom: `1.45rem`,
       }}
     >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </header>
-)
+      <HeaderContainer
+        style={{
+          margin: `0 auto`,
+          maxWidth: 960,
+          padding: `1.45rem 1.0875rem`,
+        }}
+      >
+        <h1 style={{ margin: 0 }}>
+          <Link
+            to="/"
+            style={{
+              color: `black`,
+              textDecoration: `none`,
+            }}
+          >
+            {props.siteTitle}
+          </Link>
+        </h1>
+        <h3>
+          {props.isLoggedIn && `Hello ${props.username}`}
+        </h3>
+        <LogOutButton className="btn" onClick={() => setDialog(true)}>
+          {props.isLoggedIn ? "LOG OUT" : "LOG IN"}
+        </LogOutButton>
+
+      </HeaderContainer>
+      <IdentityModal showDialog={dialog} onCloseDialog={() => setDialog(false)} />
+    </header>
+  )
+}
 
 Header.propTypes = {
   siteTitle: PropTypes.string,

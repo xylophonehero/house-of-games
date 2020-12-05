@@ -1,55 +1,44 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { Link } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
+import styled from 'styled-components'
 
-function initNetlifyIdentity()
-{
-  const script = document.createElement("script");
-  script.src = "https://identity.netlify.com/v1/netlify-identity-widget.js";
-  script.async = true;
+const StartButton = styled.div`
+  height: auto;
+  width: 50vw;
+  margin: 1em auto;
+  padding: 1em;
+  color: black;
+  background-color: lightblue;
+  font-size: 3em;
+  border: 2px solid yellow;
+  text-align: center;
+`
 
-  document.body.appendChild(script);
-}
+const LinkNoUnderline = styled(Link)`
+  text-decoration: none;
+`
 
 
-function openNetlifyModal()
-{
-  const netlifyIdentity = window.netlifyIdentity;
 
-  if (netlifyIdentity)
-    netlifyIdentity.open();
-  else
-    console.log("NetlifyIdentity not defined")
-}
+
 
 const IndexPage = () =>
 {
-  useEffect(() =>
-  {
-
-    initNetlifyIdentity();
-
-  }, [])
 
 
 
   return (
     <Layout>
       <SEO title="Home" />
-      <h1>Hi people</h1>
-      <div onClick={() => { openNetlifyModal() }}>
-        Login
-    </div>
-      <p>Welcome to your new Gatsby site.</p>
-      <p>Now go build something great.</p>
-      <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-        <Image />
-      </div>
-      <Link to="/page-2/">Go to page 2</Link> <br />
-      <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
+
+      <LinkNoUnderline to='/questions'>
+        <StartButton>
+          Start
+        </StartButton>
+      </LinkNoUnderline>
     </Layout >
   )
 }

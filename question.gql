@@ -1,0 +1,9 @@
+type Question {
+    picture_clue_url: String!
+    text_clue: String!
+    answer: String!
+}
+
+type Query {
+    allQuestions: [Question!]!
+}

@@ -2,8 +2,14 @@ type Question {
     picture_clue_url: String!
     text_clue: String!
     answer: String!
+    author: User
 }
 
 type Query {
     allQuestions: [Question!]!
+}
+
+type User {
+    name: String!
+    email: String!
 }

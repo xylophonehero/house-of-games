@@ -14,6 +14,7 @@ const CREATE_QUESTION = `
 exports.handler = async event =>
 {
     const { picture_clue_url, text_clue, answer } = JSON.parse(event.body);
+
     const { data, errors } = await query(
         CREATE_QUESTION, {
         picture_clue_url, text_clue, answer

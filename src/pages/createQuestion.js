@@ -5,16 +5,18 @@ import Layout from '../components/layout';
 import DiamondImage from '../components/diamondImage';
 import { useIdentityContext } from 'react-netlify-identity-widget';
 
-const identity = useIdentityContext()
 
-const name = (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.full_name) || "No Name"
-// console.log(JSON.stringify(identity))
-const isLoggedIn = identity && identity.isLoggedIn
 
 function CreateQuestion(props)
 {
     const [message, setMessage] = useState("");
     const [formPictureUrl, setFormPictureUrl] = useState("");
+
+    const identity = useIdentityContext()
+
+    const name = (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.full_name) || "No Name"
+    // console.log(JSON.stringify(identity))
+    const isLoggedIn = identity && identity.isLoggedIn
 
     const handleSubmit = async event =>
     {

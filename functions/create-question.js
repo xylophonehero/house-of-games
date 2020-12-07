@@ -1,8 +1,13 @@
 const query = require("./utils/query")
 
 const CREATE_QUESTION = `
-    mutation($picture_clue_url: String!, $text_clue: String!, $answer: String!){
-        createQuestion(data: {picture_clue_url: $picture_clue_url, text_clue: $text_clue, answer: $answer}){
+    mutation($picture_clue_url: String!, $text_clue: String!, $answer: String!, $userId: ID!){
+        createQuestion(data: {
+            picture_clue_url: $picture_clue_url, 
+            text_clue: $text_clue, 
+            answer: $answer
+            author: {connect: $userId}
+        }){
             _id
             picture_clue_url
             text_clue

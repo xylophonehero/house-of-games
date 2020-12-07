@@ -43,7 +43,7 @@ const Header = (props) =>
           </Link>
         </h1>
         <h3>
-          {props.isLoggedIn && `Hello ${props.username}`}
+          <Link to="/createQuestion">{props.isLoggedIn && `Hello ${props.username}`}</Link>
         </h3>
         <LogOutButton className="btn" onClick={() => setDialog(true)}>
           {props.isLoggedIn ? "LOG OUT" : "LOG IN"}

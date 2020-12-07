@@ -15,6 +15,7 @@ import styled from 'styled-components'
 import Header from "./header"
 import Footer from "./footer"
 import "./layout.css"
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Site = styled.div`
   display: flex;

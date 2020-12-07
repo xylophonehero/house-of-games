@@ -3,13 +3,25 @@ type Question {
     text_clue: String!
     answer: String!
     author: User
-}
-
-type Query {
-    allQuestions: [Question!]!
+    ratings: [Rating] @relation
 }
 
 type User {
     name: String!
     email: String!
+    createdQuestions: [Question] @relation
+    createdRatings: [Rating] @relation
+}
+
+type Rating {
+    rater: User! 
+    question: Question!
+    rating: Int!
+}
+
+type Query {
+    allQuestions: [Question!]
+    allUser: [User!]
+    allRatings: [Rating!]
+    getUserByName(name: String!): User!
 }

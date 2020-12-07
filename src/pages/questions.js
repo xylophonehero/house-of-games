@@ -4,14 +4,9 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../components/layout';
 import styled from 'styled-components';
 import axios from 'axios';
+import DiamondImage from '../components/diamondImage';
+import Ratings from 'react-ratings-declarative';
 
-
-const ImageBox = styled.div`
-    border: 2px yellow solid;
-    height: auto;
-    width: auto;
-    margin: 1em;
-`
 
 const TextBox = styled.div`
     border: 2px yellow solid;
@@ -19,6 +14,15 @@ const TextBox = styled.div`
     color: white;
     margin: 1em;
     text-align: center;
+`
+
+const QuestionText = styled.h3`
+    margin: 0;
+`
+
+const AnswerText = styled.h3`
+    margin:0;
+    text-transform: uppercase;
 `
 
 
@@ -29,6 +33,7 @@ function Questions(props)
     const [questionIndex, setQuestionIndex] = useState(0);
     const [loaded, setLoaded] = useState(false);
     const [questions, setQuestions] = useState([]);
+    const [rating, setRating] = useState(0)
     useEffect(() =>
     {
         const getQuestions = async () =>
@@ -41,9 +46,25 @@ function Questions(props)
 
     }, [loaded])
 
+
+    const submitRating = async event =>
+    {
+        setRating(event)
+        //     const result = await axios.post('/api/submit-rating',
+        //         JSON.stringify({
+        //             question: questions[questionIndex],
+        //             user: "",
+        //             rating: rating
+        //         })
+        //     )
+        //     console.log(result)
+    }
+
+
     const nextQuestion = () =>
     {
         setShowAnswer(false)
+        setRating(0)
         setQuestionIndex(questionIndex + 1)
     }
 
@@ -51,40 +72,37 @@ function Questions(props)
         <Layout>
             {questions.length > 0 &&
                 <>
-                    <ImageBox>
-                        <img src={questions[questionIndex].picture_clue_url} />
-                    </ImageBox>
+                    <DiamondImage pictureUrl={questions[questionIndex].picture_clue_url} />
                     <TextBox>
-                        <h3>{questions[questionIndex].text_clue}</h3>
+                        <QuestionText>{questions[questionIndex].text_clue}</QuestionText>
                     </TextBox>
                     {showAnswer ?
                         <TextBox>
-                            <h3>{questions[questionIndex].answer}</h3>
+                            <AnswerText>{questions[questionIndex].answer}</AnswerText>
                         </TextBox> :
                         <button onClick={() => setShowAnswer(true)}>Show Answer</button>
                     }
                     {
-                        showAnswer && <button onClick={() => nextQuestion()}>
-                            Next Question
-                    </button>
+                        showAnswer &&
+                        <>
+                            <button onClick={() => nextQuestion()}>
+                                Next Question
+                            </button>
+                            <Ratings
+                                rating={rating}
+                                widgetRatedColors="yellow"
+                                widgetHoverColors="green"
+                                changeRating={submitRating}
+                            >
+                                <Ratings.Widget />
+                                <Ratings.Widget />
+                                <Ratings.Widget />
+                                <Ratings.Widget />
+                                <Ratings.Widget />
+                            </Ratings>
+                        </>
                     }
 
-                </>
-            }
-
-            {false > 0 &&
-                <>
-                    <ImageBox>
-                        {/* <Img fixed={questionData[questionIndex].node.clue_one.childImageSharp.fixed} alt="" /> */}
-                    </ImageBox>
-                    <TextBox>
-                        <h3>{questions[0].text_clue}</h3>
-                    </TextBox>
-
-
-                    <button onClick={setQuestionIndex(questionIndex + 1)}>
-                        Next Question
-                    </button>
                 </>
             }
         </Layout>

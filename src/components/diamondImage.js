@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Image from 'react-bootstrap/Image';
 
 
+
 const ImageClue = styled(Image)`
     height: 98%; 
     width: 98%;

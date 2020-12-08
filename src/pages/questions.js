@@ -5,8 +5,23 @@ import Layout from '../components/layout';
 import styled from 'styled-components';
 import axios from 'axios';
 import DiamondImage from '../components/diamondImage';
-import Ratings from 'react-ratings-declarative';
+// import Ratings from 'react-ratings-declarative';
+import { Button } from 'react-bootstrap';
 
+const InputBox = styled.input`
+    border: 2px yellow solid;
+    padding: 1em;
+    color: white;
+    margin: 1em;
+    text-align: center;
+    background-color: red;
+    outline: none;
+    width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.38316rem;
+    line-height: 1.1;
+`
 
 const TextBox = styled.div`
     border: 2px yellow solid;
@@ -33,7 +48,8 @@ function Questions(props)
     const [questionIndex, setQuestionIndex] = useState(0);
     const [loaded, setLoaded] = useState(false);
     const [questions, setQuestions] = useState([]);
-    const [rating, setRating] = useState(0)
+    // const [rating, setRating] = useState(0)
+    const [userAnswer, setUserAnswer] = useState("")
     useEffect(() =>
     {
         const getQuestions = async () =>
@@ -47,24 +63,31 @@ function Questions(props)
     }, [loaded])
 
 
-    const submitRating = async event =>
+    // const submitRating = async event =>
+    // {
+    //     setRating(event)
+    //     //     const result = await axios.post('/api/submit-rating',
+    //     //         JSON.stringify({
+    //     //             question: questions[questionIndex],
+    //     //             user: "",
+    //     //             rating: rating
+    //     //         })
+    //     //     )
+    //     //     console.log(result)
+    // }
+    const handleGuess = () =>
     {
-        setRating(event)
-        //     const result = await axios.post('/api/submit-rating',
-        //         JSON.stringify({
-        //             question: questions[questionIndex],
-        //             user: "",
-        //             rating: rating
-        //         })
-        //     )
-        //     console.log(result)
+        if (userAnswer.toUpperCase() === questions[questionIndex].answer.toUpperCase())
+            setShowAnswer(true)
+        else
+            console.log("wrong")
+        //trigger box shake
     }
-
 
     const nextQuestion = () =>
     {
         setShowAnswer(false)
-        setRating(0)
+        // setRating(0)
         setQuestionIndex(questionIndex + 1)
     }
 
@@ -76,31 +99,37 @@ function Questions(props)
                     <TextBox>
                         <QuestionText>{questions[questionIndex].text_clue}</QuestionText>
                     </TextBox>
-                    {showAnswer ?
-                        <TextBox>
-                            <AnswerText>{questions[questionIndex].answer}</AnswerText>
-                        </TextBox> :
-                        <button onClick={() => setShowAnswer(true)}>Show Answer</button>
-                    }
+
+                    <InputBox value={userAnswer} onChange={e => setUserAnswer(e.target.value)} />
+                    {/* <TextBox>
+                        <AnswerText>{userAnswer === "" ? "Type your answer here" : userAnswer}</AnswerText>
+                    </TextBox> */}
                     {
-                        showAnswer &&
-                        <>
-                            <button onClick={() => nextQuestion()}>
-                                Next Question
-                            </button>
-                            <Ratings
-                                rating={rating}
-                                widgetRatedColors="yellow"
-                                widgetHoverColors="green"
-                                changeRating={submitRating}
-                            >
-                                <Ratings.Widget />
-                                <Ratings.Widget />
-                                <Ratings.Widget />
-                                <Ratings.Widget />
-                                <Ratings.Widget />
-                            </Ratings>
-                        </>
+                        showAnswer ?
+                            <>
+                                <TextBox>
+                                    <AnswerText>{questions[questionIndex].answer}</AnswerText>
+                                </TextBox>
+                                <Button onClick={() => nextQuestion()}>
+                                    Next Question
+                            </Button>
+                                {/* <Ratings
+                                    rating={rating}
+                                    widgetRatedColors="yellow"
+                                    widgetHoverColors="green"
+                                    changeRating={submitRating}
+                                >
+                                    <Ratings.Widget />
+                                    <Ratings.Widget />
+                                    <Ratings.Widget />
+                                    <Ratings.Widget />
+                                    <Ratings.Widget />
+                                </Ratings> */}
+                            </> :
+                            <>
+                                <Button onClick={handleGuess}>Submit</Button>
+                                <Button onClick={() => setShowAnswer(true)}>Give Up</Button>
+                            </>
                     }
 
                 </>

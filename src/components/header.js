@@ -3,6 +3,8 @@ import PropTypes from "prop-types"
 import React from "react"
 import IdentityModal from 'react-netlify-identity-widget'
 import styled from 'styled-components'
+import 'react-netlify-identity-widget/styles.css'
+import "@reach/tabs/styles.css"
 
 const HeaderContainer = styled.header`
   display: grid;

@@ -10,8 +10,10 @@ const GET_USER_ID_BY_NAME = `
 
 exports.handler = async event =>
 {
-    const name = event.body
-    const { data, errors } = await query(GET_USER_ID_BY_NAME, name);
+
+    const { name } = event.queryStringParameters
+
+    const { data, errors } = await query(GET_USER_ID_BY_NAME, { name });
 
     if (errors)
     {

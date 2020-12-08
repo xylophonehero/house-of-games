@@ -19,7 +19,7 @@ const ImageBox = styled.div`
 `
 
 // Increase pixel density for crop preview quality on retina screens.
-const pixelRatio = window.devicePixelRatio || 1;
+// const pixelRatio = window.devicePixelRatio || 1;
 
 
 
@@ -146,10 +146,12 @@ function CreateQuestion(props)
         const scaleY = image.naturalHeight / image.height;
         const ctx = canvas.getContext("2d");
 
-        canvas.width = crop.width * pixelRatio;
-        canvas.height = crop.height * pixelRatio;
+        // canvas.width = crop.width * pixelRatio;
+        // canvas.height = crop.height * pixelRatio;
+        canvas.width = crop.width;
+        canvas.height = crop.height;
 
-        ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        // ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
         ctx.imageSmoothingQuality = "high";
 
         ctx.drawImage(
@@ -178,6 +180,7 @@ function CreateQuestion(props)
                         onChange={(c) => setCrop(c)}
                         onComplete={(c) => setCompletedCrop(c)}
                         crossorigin="anonymous"
+
                     // style={{ width: 400, height: 400 }}
                     />
                     <ImageBox>

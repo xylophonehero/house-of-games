@@ -30,6 +30,7 @@ function CreateQuestion(props)
     const [formPictureUrl, setFormPictureUrl] = useState("");
     const [progressBarAmount, setProgressBarAmount] = useState(0);
 
+
     const identity = useIdentityContext()
 
     const name = (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.full_name) || "No Name"
@@ -173,13 +174,14 @@ function CreateQuestion(props)
             {message !== "" ? <h3>{message}</h3> :
 
                 <Container>
+                    {/* <img src={formPictureUrl} /> */}
                     <ReactCrop
                         src={upImg === null ? formPictureUrl : upImg}
                         onImageLoaded={onLoad}
                         crop={crop}
                         onChange={(c) => setCrop(c)}
                         onComplete={(c) => setCompletedCrop(c)}
-                        crossorigin="anonymous"
+                        crossorigin="Anonymous"
 
                     // style={{ width: 400, height: 400 }}
                     />
@@ -210,10 +212,15 @@ function CreateQuestion(props)
                             <Col>
                                 <Form.Group controlId="formPictureUrl">
                                     <Form.Label>Picture URL</Form.Label>
-                                    <Form.Control name='url' type='text' placeholder='Url' value={formPictureUrl} onChange={e => setFormPictureUrl(e.target.value)} />
+                                    <Form.Control name='url' type='text' placeholder='Url' value={formPictureUrl}
+                                        onChange={e => setFormPictureUrl(`https://cors-anywhere.herokuapp.com/${e.target.value}`)}
+                                    // onChange={e => loadPicturefromUrl(e.target.value)}
+
+                                    />
                                 </Form.Group>
                             </Col>
                         </Row>
+
                         <Form.Group controlId="formTextClue">
                             <Form.Label>Text Clue</Form.Label>
                             <Form.Control required name='textclue' type='text' placeholder='Text Clue' />

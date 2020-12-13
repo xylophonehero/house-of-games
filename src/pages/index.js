@@ -1,12 +1,12 @@
 import React from "react"
 import { Link } from "gatsby"
-
+import { Button } from 'react-bootstrap'
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import styled from 'styled-components'
 
-const StartButton = styled.div`
-  height: auto;
+const StartButton = styled(Button)`
+  /* height: auto;
   width: 50vw;
   margin: 1em auto;
   padding: 1em;
@@ -14,7 +14,7 @@ const StartButton = styled.div`
   background-color: lightblue;
   font-size: 3em;
   border: 2px solid yellow;
-  text-align: center;
+  text-align: center; */
 `
 
 const LinkNoUnderline = styled(Link)`

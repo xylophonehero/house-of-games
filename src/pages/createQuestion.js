@@ -176,7 +176,7 @@ function CreateQuestion(props)
                 <Container>
                     {/* <img src={formPictureUrl} /> */}
                     <ReactCrop
-                        src={upImg === null ? formPictureUrl : upImg}
+                        src={upImg === null ? `https://cors-anywhere.herokuapp.com/${formPictureUrl}` : upImg}
                         onImageLoaded={onLoad}
                         crop={crop}
                         onChange={(c) => setCrop(c)}
@@ -213,7 +213,7 @@ function CreateQuestion(props)
                                 <Form.Group controlId="formPictureUrl">
                                     <Form.Label>Picture URL</Form.Label>
                                     <Form.Control name='url' type='text' placeholder='Url' value={formPictureUrl}
-                                        onChange={e => setFormPictureUrl(`https://cors-anywhere.herokuapp.com/${e.target.value}`)}
+                                        onChange={e => setFormPictureUrl(e.target.value)}
                                     // onChange={e => loadPicturefromUrl(e.target.value)}
 
                                     />

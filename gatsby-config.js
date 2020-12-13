@@ -41,7 +41,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-netlify-identity`,
       options: {
-        url: `https://peaceful-euclid-2c0898.netlify.app/` // required!
+        url: `https://houseofgames.netlify.app/` // required!
       }
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality

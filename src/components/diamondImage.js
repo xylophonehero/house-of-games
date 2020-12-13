@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'react-bootstrap/Image';
+// import { animated, useSpring } from 'react-spring';
 
 
 
@@ -13,20 +14,29 @@ const ImageClue = styled(Image)`
 `
 
 const ImageBox = styled.div`
-    border: 2px yellow solid;
-    background-color: yellow;
+    border: 2px lightblue solid;
+    background-color: lightblue;
     height: 400px;
     width: 400px;
     margin: 1em auto;
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 `
 
-function DiamondImage(props)
+const DiamondImage = (props) =>
 {
+    // const rotateIn = useSpring({
+    //     to: { transform: 'rotate(0deg) scale(1)' },
+    //     from: { transform: 'rotate(-45deg) scale(0.1)' },
+    //     config: { duration: 1000 },
+    //     reset: props.reset
+    // })
+
     return (
+
         <ImageBox>
-            <ImageClue style={{}} src={props.pictureUrl} alt="picture clue" fluid />
+            <ImageClue src={props.pictureUrl} alt="picture clue" fluid />
         </ImageBox>
+
     );
 }
 

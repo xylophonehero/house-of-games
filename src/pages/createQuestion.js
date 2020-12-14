@@ -10,8 +10,8 @@ import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
 const ImageBox = styled.div`
-    border: 2px yellow solid;
-    background-color: yellow;
+    border: 2px lightblue solid;
+    background-color: lightblue;
     height: 400px;
     width: 400px;
     margin: 1em auto;
@@ -23,11 +23,11 @@ const ImageBox = styled.div`
 
 
 
-function CreateQuestion(props)
+function CreateQuestion({ location })
 {
     //handle create question
     const [message, setMessage] = useState("");
-    const [formPictureUrl, setFormPictureUrl] = useState("");
+    const [formPictureUrl, setFormPictureUrl] = useState(location.state.update ? location.state.picture_clue_url : "");
     const [progressBarAmount, setProgressBarAmount] = useState(0);
 
 
@@ -36,6 +36,11 @@ function CreateQuestion(props)
     const name = (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.full_name) || "No Name"
     // console.log(JSON.stringify(identity))
     const isLoggedIn = identity && identity.isLoggedIn
+
+    // useEffect(() =>
+    // {
+    //     console.log(location.state.answer)
+    // }, [])
 
     const blobToDataURL = () => 
     {
@@ -170,7 +175,8 @@ function CreateQuestion(props)
 
     return (
         <Layout>
-            <h1>Create a Question</h1>
+
+            <h1>{location.state.update ? "Update" : "Create"} a Question</h1>
             {message !== "" ? <h3>{message}</h3> :
 
                 <Container>
@@ -223,11 +229,11 @@ function CreateQuestion(props)
 
                         <Form.Group controlId="formTextClue">
                             <Form.Label>Text Clue</Form.Label>
-                            <Form.Control required name='textclue' type='text' placeholder='Text Clue' />
+                            <Form.Control defaultValue={location.state.text_clue} required name='textclue' type='text' placeholder='Text Clue' />
                         </Form.Group>
                         <Form.Group controlId="formAnswer">
                             <Form.Label>Answer</Form.Label>
-                            <Form.Control name='answer' type='text' placeholder='Answer' />
+                            <Form.Control defaultValue={location.state.answer} required name='answer' type='text' placeholder='Answer' />
                         </Form.Group>
                         {progressBarAmount === 0 ?
                             <Button type='submit'>Submit</Button> :

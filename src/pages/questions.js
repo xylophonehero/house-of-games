@@ -62,18 +62,21 @@ function Questions(props)
     const [userAnswer, setUserAnswer] = useState("");
     const [resetAnimations, setResetAnimations] = useState(true);
     const [displayText, setDisplayText] = useState(false);
+
+    const getQuestions = async () =>
+    {
+        const result = await axios("/api/get-questions");
+        const questions = result.data.questions.sort(() => Math.random() - 0.5)
+        setQuestions(questions);
+        setLoaded(true);
+        const input = document.querySelector("input")
+        input !== null && input.focus()
+    }
     useEffect(() =>
     {
-        const getQuestions = async () =>
-        {
-            const result = await axios("/api/get-questions");
-            setQuestions(result.data.questions);
-            setLoaded(true);
-            const input = document.querySelector("input")
-            input !== null && input.focus()
-        }
-        getQuestions();
 
+        getQuestions();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() =>
@@ -117,7 +120,6 @@ function Questions(props)
     const opacityWithDelay = useSpring({ transform: displayText ? 'rotateX(0deg)' : 'rotateX(90deg)', opacity: 1, config: { duration: 500 } })
     const opacityWithDelayAnswer = useSpring({ transform: showAnswer ? 'rotateX(0deg)' : 'rotateX(90deg)', opacity: 1, delay: 500, config: { duration: 500 } })
 
-
     // const submitRating = async event =>
     // {
     //     setRating(event)
@@ -130,8 +132,9 @@ function Questions(props)
     //     //     )
     //     //     console.log(result)
     // }
-    const handleGuess = () =>
+    const handleGuess = e =>
     {
+        e.preventDefault()
         if (userAnswer.toUpperCase() === questions[questionIndex].answer.toUpperCase())
             setShowAnswer(true)
         else
@@ -142,39 +145,51 @@ function Questions(props)
     const nextQuestion = () =>
     {
         setShowAnswer(false)
-        setResetAnimations(true)
+
         setUserAnswer("")
-        setQuestionIndex(questionIndex + 1)
+        if (questionIndex + 1 === questions.length)
+        {
+            setLoaded(false)
+            getQuestions()
+            setQuestionIndex(0)
+            setLoaded(true)
+
+        } else
+            setQuestionIndex(questionIndex + 1)
+        setResetAnimations(true)
     }
 
     return (
         <Layout>
-            {questions.length > 0 &&
+            {loaded && questions.length > 0 &&
 
                 <>
                     <animated.div style={rotateIn}>
-                        <DiamondImage pictureUrl={questions[questionIndex].picture_clue_url} reset={resetAnimations} />
+                        <DiamondImage size={400} pictureUrl={questions[questionIndex].picture_clue_url} reset={resetAnimations} />
                     </animated.div>
                     <TextBox style={scaleX}>
                         <QuestionText style={opacityWithDelay}>{questions[questionIndex].text_clue}</QuestionText>
                     </TextBox>
 
-                    <TextBox
-                        style={{
-                            transform: x
-                                .interpolate({
-                                    range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
-                                    output: [0, 40, -40, 40, -40, 40, -40, 0]
-                                })
-                                .interpolate(x => `translate3d(${x}px, 0px, 0px)`)
-                        }}>
-                        <InputBox
-                            value={userAnswer}
-                            onChange={e => setUserAnswer(e.target.value)}
-                            maxLength='30'
-                        />
-                    </TextBox>
+                    <form onSubmit={handleGuess}>
+                        <TextBox
+                            style={{
+                                transform: x
+                                    .interpolate({
+                                        range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
+                                        output: [0, 40, -40, 40, -40, 40, -40, 0]
+                                    })
+                                    .interpolate(x => `translate3d(${x}px, 0px, 0px)`)
+                            }}>
 
+                            <InputBox
+                                value={userAnswer}
+                                onChange={e => setUserAnswer(e.target.value)}
+                                maxLength='30'
+                            />
+                        </TextBox>
+                        <Button type="submit" >Submit</Button>
+                    </form>
                     {
                         showAnswer ?
                             <>
@@ -183,7 +198,7 @@ function Questions(props)
                                 </TextBox>
                                 <Button onClick={() => nextQuestion()}>
                                     Next Question
-                            </Button>
+                                </Button>
                                 {/* <Ratings
                                     rating={rating}
                                     widgetRatedColors="yellow"
@@ -198,7 +213,7 @@ function Questions(props)
                                 </Ratings> */}
                             </> :
                             <>
-                                <Button onClick={handleGuess}>Submit</Button>
+
                                 <Button onClick={() => setShowAnswer(true)}>Give Up</Button>
                             </>
                     }

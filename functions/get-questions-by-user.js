@@ -1,23 +1,27 @@
 const query = require("./utils/query")
 
 const GET_QUESTIONS_BY_USER = `
-    query($name: !String){
-        createdQuestions{
-            data{
-                _id
-                picture_clue_url
-                text_clue
-                answer
+    query($name: String!, $cursor: String){
+        getUserByName(name: $name){
+            createdQuestions(_size: 2, _cursor: $cursor){
+                data{
+                    _id
+                    picture_clue_url
+                    text_clue
+                    answer
+                }
+                before
+                after
             }
         }
     }
 `;
 
-exports.handler = async event => x
+exports.handler = async event =>
 {
-    const { name } = JSON.parse(event.body);
+    const { name, cursor } = event.queryStringParameters;
 
-    const { data, errors } = await query(GET_QUESTIONS_BY_USER, { name });
+    const { data, errors } = await query(GET_QUESTIONS_BY_USER, { name, cursor });
 
     if (errors)
     {
@@ -28,6 +32,6 @@ exports.handler = async event => x
     }
     return {
         statusCode: 200,
-        body: JSON.stringify({ questions: data.getUserByName.createdQuestions.data })
+        body: JSON.stringify({ questions: data.getUserByName.createdQuestions })
     }
 }

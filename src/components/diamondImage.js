@@ -16,8 +16,10 @@ const ImageClue = styled(Image)`
 const ImageBox = styled.div`
     border: 2px lightblue solid;
     background-color: lightblue;
-    height: 400px;
-    width: 400px;
+    /* height: 400px;
+    width: 400px; */
+    height: ${props => props.size}px;
+    width: ${props => props.size}px;
     margin: 1em auto;
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 `
@@ -33,7 +35,7 @@ const DiamondImage = (props) =>
 
     return (
 
-        <ImageBox>
+        <ImageBox size={props.size}>
             <ImageClue src={props.pictureUrl} alt="picture clue" fluid />
         </ImageBox>
 

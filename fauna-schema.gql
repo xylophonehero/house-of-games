@@ -2,14 +2,16 @@ type Question {
     picture_clue_url: String!
     text_clue: String!
     answer: String!
-    author: User
+    author: User @relation(name: "question_creator")
     ratings: [Rating] @relation
+    usersAnswered: [User] @relation(name: "questions_answered")
 }
 
 type User {
     name: String!
     email: String!
-    createdQuestions: [Question] @relation
+    createdQuestions: [Question] @relation(name: "question_creator")
+    questionsAnswered: [Question] @relation(name: "questions_answered")
     createdRatings: [Rating] @relation
 }
 

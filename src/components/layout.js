@@ -17,14 +17,22 @@ import Footer from "./footer"
 import "./layout.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { positions, Provider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
+
 const Site = styled.div`
   display: flex;
   min-height: 100vh;
   flex-direction: column;
 `
-
+const options = {
+  timeout: 5000,
+  postion: positions.BOTTOM_CENTER
+}
 const Layout = ({ children }) =>
 {
+
+
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -42,21 +50,24 @@ const Layout = ({ children }) =>
   const isLoggedIn = identity && identity.isLoggedIn
 
   return (
-    <Site>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} username={name} isLoggedIn={isLoggedIn} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-          flexGrow: 1,
-        }}
-      >
-        <main>{children}</main>
+    <Provider template={AlertTemplate} {...options}>
+      <Site>
+        <Header siteTitle={data.site.siteMetadata?.title || `Title`} username={name} isLoggedIn={isLoggedIn} />
+        <div
+          style={{
+            margin: `0 auto`,
+            maxWidth: 960,
+            padding: `0 1.0875rem 1.45rem`,
+            flexGrow: 1,
+          }}
+        >
+          <main>{children}</main>
 
-      </div>
-      <Footer />
-    </Site>
+        </div>
+        <Footer />
+      </Site>
+
+    </Provider >
   )
 }
 

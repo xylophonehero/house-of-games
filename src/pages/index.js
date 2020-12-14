@@ -5,6 +5,8 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import styled from 'styled-components'
 
+
+
 const StartButton = styled(Button)`
   /* height: auto;
   width: 50vw;
@@ -23,7 +25,10 @@ const LinkNoUnderline = styled(Link)`
 
 const IndexPage = () =>
 {
+
+
   return (
+
     <Layout>
       <SEO title="Home" />
       <LinkNoUnderline to='/questions'>
@@ -32,6 +37,7 @@ const IndexPage = () =>
         </StartButton>
       </LinkNoUnderline>
     </Layout >
+
   )
 }
 export default IndexPage

@@ -21,19 +21,11 @@ const LinkNoUnderline = styled(Link)`
   text-decoration: none;
 `
 
-
-
-
-
 const IndexPage = () =>
 {
-
-
-
   return (
     <Layout>
       <SEO title="Home" />
-
       <LinkNoUnderline to='/questions'>
         <StartButton>
           Start

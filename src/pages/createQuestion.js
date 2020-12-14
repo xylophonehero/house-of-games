@@ -23,11 +23,11 @@ const ImageBox = styled.div`
 
 
 
-function CreateQuestion({ location })
+function CreateQuestion()
 {
     //handle create question
     const [message, setMessage] = useState("");
-    const [formPictureUrl, setFormPictureUrl] = useState(location.state.update ? location.state.picture_clue_url : "");
+    const [formPictureUrl, setFormPictureUrl] = useState("");
     const [progressBarAmount, setProgressBarAmount] = useState(0);
 
 
@@ -176,7 +176,7 @@ function CreateQuestion({ location })
     return (
         <Layout>
 
-            <h1>{location.state.update ? "Update" : "Create"} a Question</h1>
+            <h1>Create a Question</h1>
             {message !== "" ? <h3>{message}</h3> :
 
                 <Container>
@@ -229,11 +229,11 @@ function CreateQuestion({ location })
 
                         <Form.Group controlId="formTextClue">
                             <Form.Label>Text Clue</Form.Label>
-                            <Form.Control defaultValue={location.state.text_clue} required name='textclue' type='text' placeholder='Text Clue' />
+                            <Form.Control required name='textclue' type='text' placeholder='Text Clue' />
                         </Form.Group>
                         <Form.Group controlId="formAnswer">
                             <Form.Label>Answer</Form.Label>
-                            <Form.Control defaultValue={location.state.answer} required name='answer' type='text' placeholder='Answer' />
+                            <Form.Control required name='answer' type='text' placeholder='Answer' />
                         </Form.Group>
                         {progressBarAmount === 0 ?
                             <Button type='submit'>Submit</Button> :

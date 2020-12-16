@@ -65,7 +65,7 @@ function Questions(props)
 
     const [maxImageSize, setMaxImageSize] = useState(400);
 
-    var input = document.querySelector("input")
+
 
     const getQuestions = async () =>
     {
@@ -74,7 +74,7 @@ function Questions(props)
         setQuestions(questions);
         setResetAnimations(true);
         setLoaded(true);
-        input = document.querySelector("input")
+        const input = document.querySelector("input")
         input !== null && input.focus()
     }
     useEffect(() =>
@@ -86,6 +86,7 @@ function Questions(props)
 
     useEffect(() =>
     {
+        const input = document.querySelector("input")
         input !== null && input.focus()
         // questionIndex !== 0 &&
         //     setResetAnimations(true)
@@ -145,6 +146,7 @@ function Questions(props)
         else
         {
             triggerShake(!shake);
+            const input = document.querySelector("input")
             input !== null && input.focus()
         }
 

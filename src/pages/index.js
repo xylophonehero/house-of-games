@@ -17,6 +17,7 @@ const StartButton = styled(Button)`
   font-size: 3em;
   border: 2px solid yellow;
   text-align: center; */
+  margin: 2rem;
 `
 
 const LinkNoUnderline = styled(Link)`
@@ -31,10 +32,17 @@ const IndexPage = () =>
 
     <Layout>
       <SEO title="Home" />
+      <h1>Answer Smash</h1>
+
       <LinkNoUnderline to='/questions'>
         <StartButton>
           Start
         </StartButton>
+      </LinkNoUnderline>
+      <LinkNoUnderline to='/myQuestions'>
+
+        <StartButton>My Questions</StartButton>
+
       </LinkNoUnderline>
     </Layout >
 

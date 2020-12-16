@@ -11,9 +11,14 @@ import { useAlert } from 'react-alert';
 
 
 const QuestionCard = styled.div`
-    display: grid;
+    /* display: grid;
+    grid-template-columns: 160px 300px 100px; */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     border-radius: 1rem;
-    grid-template-columns: 160px 300px 100px;
+    
     background-color: white;
     margin: 1rem;
     padding: 1rem;
@@ -59,7 +64,7 @@ const Question = (props) =>
         <QuestionCard>
             <DiamondImage size={150} pictureUrl={props.question.picture_clue_url} />
             {editMode ?
-                <Form onSubmit={updateQuestion}>
+                <Form onSubmit={updateQuestion} style={{ flexGrow: 2 }}>
                     <Form.Group>
                         <Form.Label><b>Clue:</b></Form.Label>
                         <Form.Control name='textclue' as='textarea' defaultValue={props.question.text_clue} rows={2} />
@@ -74,21 +79,22 @@ const Question = (props) =>
                     </ButtonGroup>
                 </Form>
                 :
-                <div>
+                <div style={{ flexGrow: 2, maxWidth: '400px', padding: '1rem' }}>
                     <p><b>Clue: </b>{props.question.text_clue}</p>
                     <p style={{ textTransform: 'capitalize' }}><b>Answer: </b>{props.question.answer}</p>
                 </div>
             }
 
-            <div>
+            <div style={{ alignSelf: 'center', flexShrink: 3 }}>
                 {/* <button><LinkNoUnderline to="/createQuestion" state={{ update: true, picture_clue_url: props.question.picture_clue_url, text_clue: props.question.text_clue, answer: props.question.answer }}>&#x270F;</LinkNoUnderline></button> */}
                 <EmojiButton onClick={() => setEditMode(!editMode)}>&#x270F;</EmojiButton>
                 <EmojiButton onClick={() => showDeleteConfirm(!deleteConfirm)}>&#x1F5D1;</EmojiButton>
-                {deleteConfirm && <div>
-                    <p>Are you sure?</p>
+                {//TODO add delete low opacity overlay instead
+                    deleteConfirm && <div>
+                        Are you sure?
                     <Button variant='success' onClick={deleteQuestion}>Yes</Button>
-                    <Button variant='danger' onClick={() => showDeleteConfirm(false)}>No</Button>
-                </div>}
+                        <Button variant='danger' onClick={() => showDeleteConfirm(false)}>No</Button>
+                    </div>}
             </div>
         </QuestionCard>
     );
@@ -120,9 +126,9 @@ function MyQuestions(props)
     }, [])
     return (
         <Layout>
-            <h2>My questions</h2>
+            <h1>My questions</h1>
             <Link to="/createQuestion" state={{ update: false }}>
-                <Button>Create a new question</Button>
+                <Button >Create a new question</Button>
             </Link>
 
             {loaded && userQuestions.data.length > 0 ?

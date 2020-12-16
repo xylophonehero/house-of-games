@@ -3,7 +3,7 @@ const query = require("./utils/query")
 const GET_QUESTIONS_BY_USER = `
     query($name: String!, $cursor: String){
         getUserByName(name: $name){
-            createdQuestions(_size: 2, _cursor: $cursor){
+            createdQuestions(_size: 10, _cursor: $cursor){
                 data{
                     _id
                     picture_clue_url

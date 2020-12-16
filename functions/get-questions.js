@@ -8,6 +8,9 @@ const GET_QUESTIONS = `
                 picture_clue_url
                 text_clue
                 answer
+                author{
+                    name
+                }
             }
         }
     }

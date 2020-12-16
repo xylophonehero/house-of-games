@@ -63,28 +63,33 @@ function Questions(props)
     const [resetAnimations, setResetAnimations] = useState(true);
     const [displayText, setDisplayText] = useState(false);
 
+    const [maxImageSize, setMaxImageSize] = useState(400);
+
+    const input = document.querySelector("input")
+
     const getQuestions = async () =>
     {
         const result = await axios("/api/get-questions");
         const questions = result.data.questions.sort(() => Math.random() - 0.5)
         setQuestions(questions);
+        setResetAnimations(true);
         setLoaded(true);
-        const input = document.querySelector("input")
+
         input !== null && input.focus()
     }
     useEffect(() =>
     {
-
+        setMaxImageSize(Math.min(window.innerWidth * 0.9, 400))
         getQuestions();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() =>
     {
-        const input = document.querySelector("input")
         input !== null && input.focus()
         // questionIndex !== 0 &&
         //     setResetAnimations(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionIndex])
 
 
@@ -99,7 +104,7 @@ function Questions(props)
         from: { transform: 'rotate(-45deg) scale(0.1)' },
         config: { duration: 1000 },
         reset: resetAnimations,
-        onRest: () => { setResetAnimations(false) }
+        onStart: () => { setResetAnimations(false) }
     })
 
     const scaleX = useSpring({
@@ -138,7 +143,11 @@ function Questions(props)
         if (userAnswer.toUpperCase() === questions[questionIndex].answer.toUpperCase())
             setShowAnswer(true)
         else
+        {
             triggerShake(!shake);
+            input !== null && input.focus()
+        }
+
 
     }
 
@@ -165,7 +174,7 @@ function Questions(props)
 
                 <>
                     <animated.div style={rotateIn}>
-                        <DiamondImage size={400} pictureUrl={questions[questionIndex].picture_clue_url} reset={resetAnimations} />
+                        <DiamondImage size={maxImageSize} pictureUrl={questions[questionIndex].picture_clue_url} reset={resetAnimations} />
                     </animated.div>
                     <TextBox style={scaleX}>
                         <QuestionText style={opacityWithDelay}>{questions[questionIndex].text_clue}</QuestionText>
@@ -186,9 +195,14 @@ function Questions(props)
                                 value={userAnswer}
                                 onChange={e => setUserAnswer(e.target.value)}
                                 maxLength='30'
+                                disabled={showAnswer}
                             />
                         </TextBox>
-                        <Button type="submit" >Submit</Button>
+                        {!showAnswer && <>
+                            <Button type="submit" >Submit</Button>
+                            <Button style={{ float: 'right' }} onClick={() => setShowAnswer(true)}>Give Up</Button>
+                        </>
+                        }
                     </form>
                     {
                         showAnswer ?
@@ -199,6 +213,7 @@ function Questions(props)
                                 <Button onClick={() => nextQuestion()}>
                                     Next Question
                                 </Button>
+                                <div style={{ float: 'right' }}>Created by {questions[questionIndex].author.name}</div>
                                 {/* <Ratings
                                     rating={rating}
                                     widgetRatedColors="yellow"
@@ -214,7 +229,7 @@ function Questions(props)
                             </> :
                             <>
 
-                                <Button onClick={() => setShowAnswer(true)}>Give Up</Button>
+
                             </>
                     }
 

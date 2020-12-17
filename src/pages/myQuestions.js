@@ -109,12 +109,20 @@ function MyQuestions(props)
 
     const [userQuestions, setUserQuestions] = useState([])
     const [loaded, setLoaded] = useState(false);
+    const [error, setError] = useState("")
 
     const getQuestions = async cursor =>
     {
+
         const response = await axios.get('/api/get-questions-by-user', { params: { name: name, cursor: cursor } });
-        setUserQuestions(response.data.questions);
-        setLoaded(true);
+
+
+        if (response.status === 200)
+        {
+            setUserQuestions(response.data.questions);
+            setLoaded(true);
+        }
+        else setError(response.statusText)
     }
 
 
@@ -139,7 +147,10 @@ function MyQuestions(props)
                     {userQuestions.before && <Button onClick={() => getQuestions(userQuestions.before)}>&larr;</Button>}
                     {userQuestions.after && <Button style={{ float: 'right' }} onClick={() => getQuestions(userQuestions.after)}>&rarr;</Button>}
                 </>
-                : <Spinner animation="border" />}
+                : <div style={{ margin: '1rem' }}>{error === "" ?
+                    <Spinner animation="border" /> :
+                    <p>Failed to fetch questions : {error}</p>
+                }</div>}
 
         </Layout>
     );

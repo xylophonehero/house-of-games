@@ -26,4 +26,5 @@ type Query {
     allUser: [User!]
     allRatings: [Rating!]
     getUserByName(name: String!): User!
+    questions_by_reverse_date: [String!, String!]
 }

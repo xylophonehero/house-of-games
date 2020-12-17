@@ -64,18 +64,26 @@ function Questions(props)
     const [displayText, setDisplayText] = useState(false);
 
     const [maxImageSize, setMaxImageSize] = useState(400);
-
+    const [error, setError] = useState("")
 
 
     const getQuestions = async () =>
     {
         const result = await axios("/api/get-questions");
-        const questions = result.data.questions.sort(() => Math.random() - 0.5)
-        setQuestions(questions);
-        setResetAnimations(true);
-        setLoaded(true);
-        const input = document.querySelector("input")
-        input !== null && input.focus()
+        if (result.status === 200)
+        {
+            const questions = result.data.questions.reverse();
+            setQuestions(questions);
+            setResetAnimations(true);
+            setLoaded(true);
+            const input = document.querySelector("input")
+            input !== null && input.focus()
+        } else
+        {
+            setError(result.statusText)
+        }
+
+
     }
     useEffect(() =>
     {
@@ -88,6 +96,7 @@ function Questions(props)
     {
         const input = document.querySelector("input")
         input !== null && input.focus()
+
         // questionIndex !== 0 &&
         //     setResetAnimations(true)
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,52 +180,53 @@ function Questions(props)
     }
 
     return (
-        <Layout>
-            {loaded && questions.length > 0 &&
+        <Layout>{error !== "" ? <p>Error: {error}</p> :
+            <>
+                { loaded && questions.length > 0 &&
 
-                <>
-                    <animated.div style={rotateIn}>
-                        <DiamondImage size={maxImageSize} pictureUrl={questions[questionIndex].picture_clue_url} reset={resetAnimations} />
-                    </animated.div>
-                    <TextBox style={scaleX}>
-                        <QuestionText style={opacityWithDelay}>{questions[questionIndex].text_clue}</QuestionText>
-                    </TextBox>
-
-                    <form onSubmit={handleGuess}>
-                        <TextBox
-                            style={{
-                                transform: x
-                                    .interpolate({
-                                        range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
-                                        output: [0, 40, -40, 40, -40, 40, -40, 0]
-                                    })
-                                    .interpolate(x => `translate3d(${x}px, 0px, 0px)`)
-                            }}>
-
-                            <InputBox
-                                value={userAnswer}
-                                onChange={e => setUserAnswer(e.target.value)}
-                                maxLength='30'
-                                disabled={showAnswer}
-                            />
+                    <>
+                        <animated.div style={rotateIn}>
+                            <DiamondImage size={maxImageSize} pictureUrl={questions[questionIndex].picture_clue_url} reset={resetAnimations} />
+                        </animated.div>
+                        <TextBox style={scaleX}>
+                            <QuestionText style={opacityWithDelay}>{questions[questionIndex].text_clue}</QuestionText>
                         </TextBox>
-                        {!showAnswer && <>
-                            <Button type="submit" >Submit</Button>
-                            <Button style={{ float: 'right' }} onClick={() => setShowAnswer(true)}>Give Up</Button>
-                        </>
-                        }
-                    </form>
-                    {
-                        showAnswer ?
-                            <>
-                                <TextBox style={scaleXAnswer}>
-                                    <AnswerText style={opacityWithDelayAnswer}>{questions[questionIndex].answer}</AnswerText>
-                                </TextBox>
-                                <Button onClick={() => nextQuestion()}>
-                                    Next Question
+
+                        <form onSubmit={handleGuess}>
+                            <TextBox
+                                style={{
+                                    transform: x
+                                        .interpolate({
+                                            range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
+                                            output: [0, 40, -40, 40, -40, 40, -40, 0]
+                                        })
+                                        .interpolate(x => `translate3d(${x}px, 0px, 0px)`)
+                                }}>
+
+                                <InputBox
+                                    value={userAnswer}
+                                    onChange={e => setUserAnswer(e.target.value)}
+                                    maxLength='30'
+                                    disabled={showAnswer}
+                                />
+                            </TextBox>
+                            {!showAnswer && <>
+                                <Button type="submit" >Submit</Button>
+                                <Button style={{ float: 'right' }} onClick={() => setShowAnswer(true)}>Give Up</Button>
+                            </>
+                            }
+                        </form>
+                        {
+                            showAnswer ?
+                                <>
+                                    <TextBox style={scaleXAnswer}>
+                                        <AnswerText style={opacityWithDelayAnswer}>{questions[questionIndex].answer}</AnswerText>
+                                    </TextBox>
+                                    <Button onClick={() => nextQuestion()}>
+                                        Next Question
                                 </Button>
-                                <div style={{ float: 'right' }}>Created by {questions[questionIndex].author.name}</div>
-                                {/* <Ratings
+                                    <div style={{ float: 'right' }}>Created by {questions[questionIndex].author.name}</div>
+                                    {/* <Ratings
                                     rating={rating}
                                     widgetRatedColors="yellow"
                                     widgetHoverColors="green"
@@ -228,15 +238,17 @@ function Questions(props)
                                     <Ratings.Widget />
                                     <Ratings.Widget />
                                 </Ratings> */}
-                            </> :
-                            <>
+                                </> :
+                                <>
 
 
-                            </>
-                    }
+                                </>
+                        }
 
-                </>
-            }
+                    </>
+                }
+            </>
+        }
         </Layout >
 
     );

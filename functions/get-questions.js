@@ -2,7 +2,7 @@ const query = require("./utils/query")
 
 const GET_QUESTIONS = `
     query{
-        allQuestions(_size: 10){
+        allQuestions{
             data{
                 _id
                 picture_clue_url

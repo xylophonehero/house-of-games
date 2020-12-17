@@ -4,7 +4,7 @@ import React from "react"
 import IdentityModal from 'react-netlify-identity-widget'
 import styled from 'styled-components'
 import 'react-netlify-identity-widget/styles.css'
-import "@reach/tabs/styles.css"
+// import "@reach/tabs/styles.css"
 import { Button } from 'react-bootstrap'
 
 const HeaderContainer = styled.header`

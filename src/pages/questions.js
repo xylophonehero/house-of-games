@@ -51,7 +51,7 @@ const AnswerText = styled(animated.h3)`
 `
 
 
-function Questions(props)
+function Questions({ location })
 {
     const [shake, triggerShake] = useState(false);
     const [showAnswer, setShowAnswer] = useState(false);
@@ -69,10 +69,11 @@ function Questions(props)
 
     const getQuestions = async () =>
     {
-        const result = await axios("/api/get-questions");
+
+        const result = await axios(`/api/get-${location.state.public ? 'public-' : ''}questions`);
         if (result.status === 200)
         {
-            const questions = result.data.questions.reverse();
+            const questions = result.data.reverse();
             setQuestions(questions);
             setResetAnimations(true);
             setLoaded(true);

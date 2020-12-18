@@ -10,6 +10,7 @@
     "@reach/visually-hidden": "^0.12.0",
     "babel-plugin-styled-components": "^1.12.0",
     "bootstrap": "^4.5.3",
+    "framer-motion": "^3.0.0",
     "gatsby": "^2.26.1",
     "gatsby-image": "^2.5.0",
     "gatsby-plugin-manifest": "^2.6.1",

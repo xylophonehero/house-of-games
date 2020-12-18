@@ -34,11 +34,18 @@ const IndexPage = () =>
       <SEO title="Home" />
       <h1>Answer Smash</h1>
 
-      <LinkNoUnderline to='/questions'>
+      <LinkNoUnderline to='/questions' state={{ public: false }}>
         <StartButton>
-          Start
+          Answer all questions
         </StartButton>
       </LinkNoUnderline>
+
+      <LinkNoUnderline to='/questions' state={{ public: true }}>
+        <StartButton>
+          Answer public questions
+        </StartButton>
+      </LinkNoUnderline>
+
       <LinkNoUnderline to='/myQuestions'>
 
         <StartButton>My Questions</StartButton>

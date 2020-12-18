@@ -99,14 +99,14 @@ function CreateQuestion()
             const formData = new FormData(formDetails),
                 formDataObj = Object.fromEntries(formData.entries())
 
-            const { data } = await axios.get('/api/get-user-id-by-name', { params: { name: name } })
+            const { data: id } = await axios.get('/api/get-user-id-by-name', { params: { name: name } })
             setProgressBarAmount(80);
             const result = await axios.post('/api/create-question',
                 JSON.stringify({
                     picture_clue_url: imageUrl,
                     text_clue: formDataObj.textclue,
                     answer: formDataObj.answer,
-                    userID: data.user
+                    userID: id
                 }))
             result.status === 200 && setMessage("Success")
             result.status === 500 && setMessage("Failed to create question. Please try again")
@@ -182,7 +182,7 @@ function CreateQuestion()
                 <Container>
                     {/* <img src={formPictureUrl} /> */}
                     <ReactCrop
-                        src={upImg === null ? `https://cors-anywhere.herokuapp.com/${formPictureUrl}` : upImg}
+                        src={upImg === null ? `https://evening-eyrie-12151.herokuapp.com/${formPictureUrl}` : upImg}
                         onImageLoaded={onLoad}
                         crop={crop}
                         onChange={(c) => setCrop(c)}

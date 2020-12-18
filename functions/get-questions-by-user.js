@@ -1,3 +1,4 @@
+const formattedResponse = require("./utils/formatted-response");
 const query = require("./utils/query")
 
 const GET_QUESTIONS_BY_USER = `
@@ -13,6 +14,12 @@ const GET_QUESTIONS_BY_USER = `
                 before
                 after
             }
+            ownedCollections{
+                data{
+                    _id
+                    name
+                }
+            }
         }
     }
 `;
@@ -20,18 +27,14 @@ const GET_QUESTIONS_BY_USER = `
 exports.handler = async event =>
 {
     const { name, cursor } = event.queryStringParameters;
-
-    const { data, errors } = await query(GET_QUESTIONS_BY_USER, { name, cursor });
-
-    if (errors)
+    try
     {
-        return {
-            statusCode: 500,
-            body: JSON.stringify(errors)
-        };
-    }
-    return {
-        statusCode: 200,
-        body: JSON.stringify({ questions: data.getUserByName.createdQuestions })
+        const res = await query(GET_QUESTIONS_BY_USER, { name, cursor });
+        const data = res.data.getUserByName
+        return formattedResponse(200, data)
+    } catch (err)
+    {
+        console.log(err)
+        return formattedResponse(500, { err: "something went wrong" })
     }
 }

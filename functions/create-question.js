@@ -12,6 +12,10 @@ const CREATE_QUESTION = `
             picture_clue_url
             text_clue
             answer
+            author{
+                _id
+                name
+            }
         }
     }
 `;

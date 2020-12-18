@@ -3,8 +3,16 @@ type Question {
     text_clue: String!
     answer: String!
     author: User @relation(name: "question_creator")
-    ratings: [Rating] @relation
+    # ratings: [Rating] @relation
     usersAnswered: [User] @relation(name: "questions_answered")
+    inCollection: Collection
+    public: Boolean
+}
+
+type Collection {
+    name: String!
+    questions: [Question]
+    owner: User @relation(name: "collections_owner")
 }
 
 type User {
@@ -12,19 +20,22 @@ type User {
     email: String!
     createdQuestions: [Question] @relation(name: "question_creator")
     questionsAnswered: [Question] @relation(name: "questions_answered")
-    createdRatings: [Rating] @relation
+    # createdRatings: [Rating] @relation
+    ownedCollections: [Collection] @relation(name: "collections_owner")
 }
 
-type Rating {
-    rater: User! 
-    question: Question!
-    rating: Int!
-}
+# type Rating {
+#     rater: User! 
+#     question: Question!
+#     rating: Int!
+# }
 
 type Query {
     allQuestions: [Question!]
     allUser: [User!]
-    allRatings: [Rating!]
+    allPublicQuestions(public: Boolean!): [Question!]
+    # allRatings: [Rating!]
     getUserByName(name: String!): User!
-    questions_by_reverse_date: [String!, String!]
+    getCollectionByName(name: String!): Collection!
+    # questions_by_reverse_date: [String!, String!]
 }

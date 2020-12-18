@@ -108,6 +108,7 @@ function MyQuestions(props)
     const name = (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.full_name) || "No Name"
 
     const [userQuestions, setUserQuestions] = useState([])
+    const [userCollections, setUserCollections] = useState([])
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState("")
 
@@ -115,11 +116,12 @@ function MyQuestions(props)
     {
 
         const response = await axios.get('/api/get-questions-by-user', { params: { name: name, cursor: cursor } });
-
+        console.log(response)
 
         if (response.status === 200)
         {
-            setUserQuestions(response.data.questions);
+            setUserQuestions(response.data.createdQuestions.data);
+            setUserCollections(response.data.ownedCollections.data);
             setLoaded(true);
         }
         else setError(response.statusText)
@@ -139,9 +141,12 @@ function MyQuestions(props)
                 <Button >Create a new question</Button>
             </Link>
 
-            {loaded && userQuestions.data.length > 0 ?
+            {loaded && userQuestions.length > 0 ?
                 <>
-                    {userQuestions.data.map(question => (
+                    {userCollections.map(collection => (
+                        <p key={collection._id}>{collection.name}</p>
+                    ))}
+                    {userQuestions.map(question => (
                         <Question key={question._id} question={question} />
                     ))}
                     {userQuestions.before && <Button onClick={() => getQuestions(userQuestions.before)}>&larr;</Button>}
